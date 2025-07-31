@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_mysqldb import MySQL
+import MySQLdb.cursors
 from flask_bcrypt import Bcrypt
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -14,6 +16,29 @@ mysql = MySQL(app)
 bcrypt = Bcrypt(app)
 
 
+# middleware
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' not in session:
+            flash('Silakan login dulu.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def role_required(*roles):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if 'role' not in session or session['role'] not in roles:
+                flash('Kamu tidak punya akses ke halaman ini.', 'danger')
+                return redirect(url_for('dashboard'))
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+
+
 # authentications
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -21,20 +46,26 @@ def login():
         email = request.form['email']
         password = request.form['password']
         
-        cur = mysql.connection.cursor()
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)  # ← penting!
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
 
-        if user and bcrypt.check_password_hash(user[4], password):
+        if user and bcrypt.check_password_hash(user['password'], password):
             session['logged_in'] = True
-            session['email'] = user[1]
-            flash('Login berhasil', 'success')
+            session['email'] = user['email']
+            session['name'] = user['name']
+            session['phone_number'] = user['phone_number']
+            session['role'] = user['role']
+
+            flash('Anda berhasil login!', 'success')
             return redirect(url_for('dashboard'))
         else:
             flash('Email atau password salah', 'danger')
     return render_template('auth/login.html')
 
+
+# register
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -56,6 +87,7 @@ def register():
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         cur = mysql.connection.cursor()
+        # cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         existing_user = cur.fetchone()
@@ -63,11 +95,14 @@ def register():
             flash("Email sudah terdaftar", "danger")
             return redirect(url_for('register'))
         
-        cur.execute("INSERT INTO users (name, phone_number, email, password) VALUES (%s, %s, %s, %s)", 
-            (name, phone_number, email, hashed_password))
+        cur.execute("""
+            INSERT INTO users (name, phone_number, email, password, role)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (name, phone_number, email, hashed_password, 'user'))
+
         
         mysql.connection.commit()
-        flash("Login berhasil", "success")
+        flash("Akun anda berhasil dibuat!", "success")
         return redirect(url_for('login'))
     return render_template('auth/register.html')
 
@@ -75,7 +110,7 @@ def register():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash("And berhasil logout!", "success")
+    flash("Anda berhasil logout!", "success")
     return redirect(url_for('login'))
 
 
@@ -83,6 +118,36 @@ def logout():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard/index.html')
+
+
+# users
+@app.route('/dashboard/users')
+def users():
+    return render_template('dashboard/users/index.html')
+
+
+# seats
+@app.route('/dashboard/seats')
+def seats():
+    return render_template('dashboard/seats/index.html')
+
+
+# menus
+@app.route('/dashboard/menus')
+def menus():
+    return render_template('dashboard/menus/index.html')
+
+
+# reservations
+@app.route('/dashboard/reservations')
+def reservations():
+    return render_template('dashboard/reservations/index.html')
+
+
+# profile
+@app.route('/dashboard/profile')
+def profile():
+    return render_template('dashboard/profile/index.html')
 
 
 if __name__ == '__main__':

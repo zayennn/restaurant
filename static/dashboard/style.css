@@ -37,6 +37,8 @@ body {
 .sidebar-header .logo {
     max-width: 100%;
     height: auto;
+    object-fit: contain;
+    border-radius: 10px;
 }
 
 .sidebar-nav {
@@ -190,13 +192,13 @@ body {
 }
 
 .content-section {
-    display: none;
+    display: block;
 }
 
-.content-section.active {
+/* .content-section.active {
     display: block;
     animation: fadeIn 0.5s;
-}
+} */
 
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -735,7 +737,7 @@ body {
 
 /* Modal Styles */
 .modal {
-    display: none;
+    display: block;
     position: fixed;
     top: 0;
     left: 0;

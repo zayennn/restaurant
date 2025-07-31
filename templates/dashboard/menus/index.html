@@ -1,0 +1,125 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}
+List Menus
+{% endblock %}
+
+{% block name %}
+<section id="menu" class="content-section">
+    <div class="section-header">
+        <h2>Menu Management</h2>
+        <button class="add-btn" id="addMenuBtn">
+            <i class="fas fa-plus"></i> Add Item
+        </button>
+    </div>
+
+    <div class="menu-categories">
+        <button class="category-btn active">All</button>
+        <button class="category-btn">Appetizers</button>
+        <button class="category-btn">Main Course</button>
+        <button class="category-btn">Desserts</button>
+        <button class="category-btn">Drinks</button>
+    </div>
+
+    <div class="menu-items-grid">
+        <div class="menu-item-card">
+            <div class="menu-item-image">
+                <img src="https://via.placeholder.com/300x200?text=Spaghetti+Carbonara" alt="Spaghetti Carbonara">
+            </div>
+            <div class="menu-item-details">
+                <h3>Spaghetti Carbonara</h3>
+                <p class="menu-item-description">Classic Italian pasta with creamy sauce and bacon.</p>
+                <div class="menu-item-meta">
+                    <span class="menu-item-price">$12.99</span>
+                    <span class="menu-item-category">Main Course</span>
+                </div>
+                <div class="menu-item-actions">
+                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item-card">
+            <div class="menu-item-image">
+                <img src="https://via.placeholder.com/300x200?text=Caesar+Salad" alt="Caesar Salad">
+            </div>
+            <div class="menu-item-details">
+                <h3>Caesar Salad</h3>
+                <p class="menu-item-description">Fresh romaine lettuce with Caesar dressing and
+                    croutons.</p>
+                <div class="menu-item-meta">
+                    <span class="menu-item-price">$8.99</span>
+                    <span class="menu-item-category">Appetizer</span>
+                </div>
+                <div class="menu-item-actions">
+                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-item-card">
+            <div class="menu-item-image">
+                <img src="https://via.placeholder.com/300x200?text=Chocolate+Lava+Cake" alt="Chocolate Lava Cake">
+            </div>
+            <div class="menu-item-details">
+                <h3>Chocolate Lava Cake</h3>
+                <p class="menu-item-description">Warm chocolate cake with a molten center, served with
+                    vanilla ice cream.</p>
+                <div class="menu-item-meta">
+                    <span class="menu-item-price">$6.99</span>
+                    <span class="menu-item-category">Dessert</span>
+                </div>
+                <div class="menu-item-actions">
+                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal" id="userModal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Add New User</h3>
+        <form id="userForm">
+            <div class="form-group">
+                <label for="modal-full-name">Full Name</label>
+                <input type="text" id="modal-full-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="modal-email">Email</label>
+                <input type="email" id="modal-email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="modal-phone">Phone Number</label>
+                <input type="tel" id="modal-phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="modal-role">Role</label>
+                <select id="modal-role" required>
+                    <option value="">Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                    <option value="customer">Customer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="modal-password">Password</label>
+                <input type="password" id="modal-password" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn">Cancel</button>
+                <button type="submit" class="submit-btn">Save User</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

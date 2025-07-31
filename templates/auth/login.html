@@ -7,14 +7,14 @@
     <title>Warung Lezat - Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='auth/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="web icon" type="png" href="{{ url_for('static', filename='images/web icon.png') }}">
+    <link rel="web icon" type="png" href="{{ url_for('static', filename='images/web logo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='sweetAlert2/style.css') }}">
 </head>
 
 <body>
     <div class="auth-container">
         <div class="auth-header">
-            <img src="{{ url_for('static', filename='images/web icon.png') }}" alt="Restaurant Logo" class="logo">
+            <img src="{{ url_for('static', filename='images/web logo.png') }}" alt="Restaurant Logo" class="logo">
             <h1>Welcome Back</h1>
             <p>Login to access your account</p>
         </div>
@@ -55,8 +55,8 @@
         </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ url_for('static', filename='auth/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}

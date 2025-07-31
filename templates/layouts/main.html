@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warung Lezat - {% block title %} Dashboard {% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="web icon" type="png" href="{{ url_for('static', filename='images/web logo.png') }}">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        {% include 'layouts/sidebar.html' %}
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            {% include 'layouts/navbar.html' %}
+
+            <!-- Content Sections -->
+            <div class="content-sections">
+                {% block content %}
+                    
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+    
+    <script src="{{ url_for('static', filename='dashboard/style.css') }}" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message" data-category="{{ category }}" data-message="{{ message }}"></div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <script>
+        document.querySelectorAll('.flash-message').forEach(function(el) {
+            const category = el.dataset.category;
+            const message = el.dataset.message;
+
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: category === 'success' ? 'success' : 'error',
+                title: message,
+                showConfirmButton: false,
+                timer: 2000,
+                customClass: {
+                    popup: 'swal2-horizontal'
+                }
+            });
+        });
+    </script>
+</body>
+</body>
+
+</html>

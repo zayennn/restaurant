@@ -1,613 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layouts/main.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard/style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+{% block title %}
+Dashboard
+{% endblock %}
 
-<body>
-    <div class="dashboard-container">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <img src="https://via.placeholder.com/150x50?text=Restaurant+Logo" alt="Restaurant Logo" class="logo">
+{% block content %}
+<section id="home" class="content-section active">
+    <h2>Dashboard Overview</h2>
+
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-icon" style="background-color: #ff6b6b;">
+                <i class="fas fa-users"></i>
             </div>
-
-            <nav class="sidebar-nav">
-                <ul>
-                    <li class="active">
-                        <a href="#home">
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#users">
-                            <i class="fas fa-users"></i>
-                            <span>Users</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#seats">
-                            <i class="fas fa-chair"></i>
-                            <span>Seat Management</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#menu">
-                            <i class="fas fa-utensils"></i>
-                            <span>Menu Management</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#reservations">
-                            <i class="fas fa-calendar-check"></i>
-                            <span>Reservations</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#profile">
-                            <i class="fas fa-user-circle"></i>
-                            <span>Profile</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="sidebar-footer">
-                <a href="/logout">
-                    <button id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </button>
-                </a>
+            <div class="stat-info">
+                <h3>Total Users</h3>
+                <p>124</p>
             </div>
-        </aside>
+        </div>
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <header class="topbar">
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
-                </div>
-
-                <div class="user-info">
-                    <div class="notifications">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
-                    </div>
-                    <div class="user-avatar">
-                        <img src="https://via.placeholder.com/40x40" alt="User Avatar">
-                        <span>Admin</span>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Content Sections -->
-            <div class="content-sections">
-                <!-- Home Section -->
-                <section id="home" class="content-section active">
-                    <h2>Dashboard Overview</h2>
-
-                    <div class="stats-cards">
-                        <div class="stat-card">
-                            <div class="stat-icon" style="background-color: #ff6b6b;">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Total Users</h3>
-                                <p>124</p>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon" style="background-color: #2ecc71;">
-                                <i class="fas fa-chair"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Available Seats</h3>
-                                <p>24/50</p>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon" style="background-color: #3498db;">
-                                <i class="fas fa-utensils"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Menu Items</h3>
-                                <p>45</p>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon" style="background-color: #f39c12;">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Today's Reservations</h3>
-                                <p>12</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="recent-activity">
-                        <h3>Recent Activity</h3>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-user-plus"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>New user registered - John Doe</p>
-                                    <span class="activity-time">10 minutes ago</span>
-                                </div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-chair"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>Table 5 reserved by Sarah Smith</p>
-                                    <span class="activity-time">1 hour ago</span>
-                                </div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-utensils"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>New menu item added - Spaghetti Carbonara</p>
-                                    <span class="activity-time">3 hours ago</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Users Section -->
-                <section id="users" class="content-section">
-                    <div class="section-header">
-                        <h2>User Management</h2>
-                        <button class="add-btn" id="addUserBtn">
-                            <i class="fas fa-plus"></i> Add User
-                        </button>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>John Doe</td>
-                                    <td>john@example.com</td>
-                                    <td>08123456789</td>
-                                    <td>Admin</td>
-                                    <td><span class="status active">Active</span></td>
-                                    <td>
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jane Smith</td>
-                                    <td>jane@example.com</td>
-                                    <td>08234567890</td>
-                                    <td>Staff</td>
-                                    <td><span class="status active">Active</span></td>
-                                    <td>
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Bob Johnson</td>
-                                    <td>bob@example.com</td>
-                                    <td>08345678901</td>
-                                    <td>Customer</td>
-                                    <td><span class="status inactive">Inactive</span></td>
-                                    <td>
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <!-- Seat Management Section -->
-                <section id="seats" class="content-section">
-                    <div class="section-header">
-                        <h2>Seat Management</h2>
-                        <button class="add-btn" id="addSeatBtn">
-                            <i class="fas fa-plus"></i> Add Seat
-                        </button>
-                    </div>
-
-                    <div class="seat-grid">
-                        <div class="seat-card">
-                            <div class="seat-number">Table 1</div>
-                            <div class="seat-capacity">4 persons</div>
-                            <div class="seat-status available">Available</div>
-                            <div class="seat-actions">
-                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="seat-card">
-                            <div class="seat-number">Table 2</div>
-                            <div class="seat-capacity">2 persons</div>
-                            <div class="seat-status reserved">Reserved</div>
-                            <div class="seat-actions">
-                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="seat-card">
-                            <div class="seat-number">Table 3</div>
-                            <div class="seat-capacity">6 persons</div>
-                            <div class="seat-status available">Available</div>
-                            <div class="seat-actions">
-                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="seat-card">
-                            <div class="seat-number">VIP Room</div>
-                            <div class="seat-capacity">10 persons</div>
-                            <div class="seat-status occupied">Occupied</div>
-                            <div class="seat-actions">
-                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Menu Management Section -->
-                <section id="menu" class="content-section">
-                    <div class="section-header">
-                        <h2>Menu Management</h2>
-                        <button class="add-btn" id="addMenuBtn">
-                            <i class="fas fa-plus"></i> Add Item
-                        </button>
-                    </div>
-
-                    <div class="menu-categories">
-                        <button class="category-btn active">All</button>
-                        <button class="category-btn">Appetizers</button>
-                        <button class="category-btn">Main Course</button>
-                        <button class="category-btn">Desserts</button>
-                        <button class="category-btn">Drinks</button>
-                    </div>
-
-                    <div class="menu-items-grid">
-                        <div class="menu-item-card">
-                            <div class="menu-item-image">
-                                <img src="https://via.placeholder.com/300x200?text=Spaghetti+Carbonara"
-                                    alt="Spaghetti Carbonara">
-                            </div>
-                            <div class="menu-item-details">
-                                <h3>Spaghetti Carbonara</h3>
-                                <p class="menu-item-description">Classic Italian pasta with creamy sauce and bacon.</p>
-                                <div class="menu-item-meta">
-                                    <span class="menu-item-price">$12.99</span>
-                                    <span class="menu-item-category">Main Course</span>
-                                </div>
-                                <div class="menu-item-actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="menu-item-card">
-                            <div class="menu-item-image">
-                                <img src="https://via.placeholder.com/300x200?text=Caesar+Salad" alt="Caesar Salad">
-                            </div>
-                            <div class="menu-item-details">
-                                <h3>Caesar Salad</h3>
-                                <p class="menu-item-description">Fresh romaine lettuce with Caesar dressing and
-                                    croutons.</p>
-                                <div class="menu-item-meta">
-                                    <span class="menu-item-price">$8.99</span>
-                                    <span class="menu-item-category">Appetizer</span>
-                                </div>
-                                <div class="menu-item-actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="menu-item-card">
-                            <div class="menu-item-image">
-                                <img src="https://via.placeholder.com/300x200?text=Chocolate+Lava+Cake"
-                                    alt="Chocolate Lava Cake">
-                            </div>
-                            <div class="menu-item-details">
-                                <h3>Chocolate Lava Cake</h3>
-                                <p class="menu-item-description">Warm chocolate cake with a molten center, served with
-                                    vanilla ice cream.</p>
-                                <div class="menu-item-meta">
-                                    <span class="menu-item-price">$6.99</span>
-                                    <span class="menu-item-category">Dessert</span>
-                                </div>
-                                <div class="menu-item-actions">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Reservations Section -->
-                <section id="reservations" class="content-section">
-                    <div class="section-header">
-                        <h2>Reservation Management</h2>
-                        <button class="add-btn" id="addReservationBtn">
-                            <i class="fas fa-plus"></i> Add Reservation
-                        </button>
-                    </div>
-
-                    <div class="reservation-filters">
-                        <div class="filter-group">
-                            <label for="reservation-date">Date:</label>
-                            <input type="date" id="reservation-date">
-                        </div>
-                        <div class="filter-group">
-                            <label for="reservation-status">Status:</label>
-                            <select id="reservation-status">
-                                <option value="all">All</option>
-                                <option value="confirmed">Confirmed</option>
-                                <option value="pending">Pending</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                        </div>
-                        <button class="filter-btn">Apply Filters</button>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Customer</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Table</th>
-                                    <th>Guests</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>John Doe</td>
-                                    <td>2023-06-15</td>
-                                    <td>19:00</td>
-                                    <td>Table 2</td>
-                                    <td>2</td>
-                                    <td><span class="status confirmed">Confirmed</span></td>
-                                    <td>
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jane Smith</td>
-                                    <td>2023-06-16</td>
-                                    <td>20:00</td>
-                                    <td>VIP Room</td>
-                                    <td>8</td>
-                                    <td><span class="status pending">Pending</span></td>
-                                    <td>
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Bob Johnson</td>
-                                    <td>2023-06-17</td>
-                                    <td>18:30</td>
-                                    <td>Table 5</td>
-                                    <td>4</td>
-                                    <td><span class="status cancelled">Cancelled</span></td>
-                                    <td>
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <!-- Profile Section -->
-                <section id="profile" class="content-section">
-                    <div class="profile-header">
-                        <h2>My Profile</h2>
-                    </div>
-
-                    <div class="profile-container">
-                        <div class="profile-sidebar">
-                            <div class="profile-avatar">
-                                <img src="https://via.placeholder.com/150x150" alt="Profile Picture">
-                                <button class="change-avatar-btn">Change Photo</button>
-                            </div>
-
-                            <div class="profile-nav">
-                                <button class="profile-nav-btn active" data-target="personal-info">Personal
-                                    Info</button>
-                                <button class="profile-nav-btn" data-target="change-password">Change Password</button>
-                                <button class="profile-nav-btn" data-target="settings">Settings</button>
-                            </div>
-                        </div>
-
-                        <div class="profile-content">
-                            <!-- Personal Info Tab -->
-                            <div id="personal-info" class="profile-tab active">
-                                <form class="profile-form">
-                                    <div class="form-group">
-                                        <label for="full-name">Full Name</label>
-                                        <input type="text" id="full-name" value="Admin User">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" id="email" value="admin@restaurant.com">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="phone">Phone Number</label>
-                                        <input type="tel" id="phone" value="+1234567890">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="role">Role</label>
-                                        <input type="text" id="role" value="Administrator" disabled>
-                                    </div>
-
-                                    <button type="submit" class="save-btn">Save Changes</button>
-                                </form>
-                            </div>
-
-                            <!-- Change Password Tab -->
-                            <div id="change-password" class="profile-tab">
-                                <form class="profile-form">
-                                    <div class="form-group">
-                                        <label for="current-password">Current Password</label>
-                                        <input type="password" id="current-password">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="new-password">New Password</label>
-                                        <input type="password" id="new-password">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="confirm-password">Confirm New Password</label>
-                                        <input type="password" id="confirm-password">
-                                    </div>
-
-                                    <button type="submit" class="save-btn">Change Password</button>
-                                </form>
-                            </div>
-
-                            <!-- Settings Tab -->
-                            <div id="settings" class="profile-tab">
-                                <form class="profile-form">
-                                    <div class="form-group">
-                                        <label for="language">Language</label>
-                                        <select id="language">
-                                            <option value="en">English</option>
-                                            <option value="es">Spanish</option>
-                                            <option value="fr">French</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="timezone">Timezone</label>
-                                        <select id="timezone">
-                                            <option value="utc">UTC</option>
-                                            <option value="est">Eastern Time (EST)</option>
-                                            <option value="pst">Pacific Time (PST)</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group checkbox-group">
-                                        <input type="checkbox" id="notifications" checked>
-                                        <label for="notifications">Enable Email Notifications</label>
-                                    </div>
-
-                                    <div class="form-group checkbox-group">
-                                        <input type="checkbox" id="dark-mode">
-                                        <label for="dark-mode">Enable Dark Mode</label>
-                                    </div>
-
-                                    <button type="submit" class="save-btn">Save Settings</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+        <div class="stat-card">
+            <div class="stat-icon" style="background-color: #2ecc71;">
+                <i class="fas fa-chair"></i>
             </div>
-        </main>
-    </div>
+            <div class="stat-info">
+                <h3>Available Seats</h3>
+                <p>24/50</p>
+            </div>
+        </div>
 
-    <!-- Modal Structure -->
-    <div class="modal" id="userModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h3>Add New User</h3>
-            <form id="userForm">
-                <div class="form-group">
-                    <label for="modal-full-name">Full Name</label>
-                    <input type="text" id="modal-full-name" required>
-                </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background-color: #3498db;">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Menu Items</h3>
+                <p>45</p>
+            </div>
+        </div>
 
-                <div class="form-group">
-                    <label for="modal-email">Email</label>
-                    <input type="email" id="modal-email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="modal-phone">Phone Number</label>
-                    <input type="tel" id="modal-phone" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="modal-role">Role</label>
-                    <select id="modal-role" required>
-                        <option value="">Select Role</option>
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
-                        <option value="customer">Customer</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="modal-password">Password</label>
-                    <input type="password" id="modal-password" required>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="cancel-btn">Cancel</button>
-                    <button type="submit" class="submit-btn">Save User</button>
-                </div>
-            </form>
+        <div class="stat-card">
+            <div class="stat-icon" style="background-color: #f39c12;">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Today's Reservations</h3>
+                <p>12</p>
+            </div>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='dashboard/style.css') }}" ></script>
-</body>
 
-</html>
+    {% if session["role"] == "admin" %}
+    <div class="recent-activity">
+        <h3>Recent Activity</h3>
+        <div class="activity-list">
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="activity-details">
+                    <p>New user registered - John Doe</p>
+                    <span class="activity-time">10 minutes ago</span>
+                </div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-chair"></i>
+                </div>
+                <div class="activity-details">
+                    <p>Table 5 reserved by Sarah Smith</p>
+                    <span class="activity-time">1 hour ago</span>
+                </div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="activity-details">
+                    <p>New menu item added - Spaghetti Carbonara</p>
+                    <span class="activity-time">3 hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

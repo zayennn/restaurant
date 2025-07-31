@@ -1,0 +1,91 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}
+Reservations
+{% endblock %}
+
+{% block content %}
+<section id="reservations" class="content-section">
+    <div class="section-header">
+        <h2>Reservation Management</h2>
+        <button class="add-btn" id="addReservationBtn">
+            <i class="fas fa-plus"></i> Add Reservation
+        </button>
+    </div>
+
+    <div class="reservation-filters">
+        <div class="filter-group">
+            <label for="reservation-date">Date:</label>
+            <input type="date" id="reservation-date">
+        </div>
+        <div class="filter-group">
+            <label for="reservation-status">Status:</label>
+            <select id="reservation-status">
+                <option value="all">All</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </div>
+        <button class="filter-btn">Apply Filters</button>
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Table</th>
+                    <th>Guests</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>2023-06-15</td>
+                    <td>19:00</td>
+                    <td>Table 2</td>
+                    <td>2</td>
+                    <td><span class="status confirmed">Confirmed</span></td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jane Smith</td>
+                    <td>2023-06-16</td>
+                    <td>20:00</td>
+                    <td>VIP Room</td>
+                    <td>8</td>
+                    <td><span class="status pending">Pending</span></td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Bob Johnson</td>
+                    <td>2023-06-17</td>
+                    <td>18:30</td>
+                    <td>Table 5</td>
+                    <td>4</td>
+                    <td><span class="status cancelled">Cancelled</span></td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

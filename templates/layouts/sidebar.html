@@ -1,0 +1,72 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <img src="{{ url_for('static', filename='images/web icon.png') }}" alt="Restaurant Logo" class="logo">
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <!-- home -->
+            {% set active = request.path == "/dashboard" %}
+            <li class="{% if active %} active {% endif %}">
+                <a href="/dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <!-- users -->
+            {% set active = request.path == "/dashboard/users" %}
+            <li class="{% if active %} active {% endif %}">
+                <a href="/dashboard/users">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+
+            <!-- seats -->
+            {% set active = request.path == "/dashboard/seats" %}
+            <li class="{% if active %} active {% endif %}">
+                <a href="/dashboard/seats">
+                    <i class="fas fa-chair"></i>
+                    <span>Seat Management</span>
+                </a>
+            </li>
+
+            <!-- menus -->
+            {% set active = request.path == "/dashboard/menus" %}
+            <li class="{% if active %} active {% endif %}">
+                <a href="/dashboard/menus">
+                    <i class="fas fa-utensils"></i>
+                    <span>Menu Management</span>
+                </a>
+            </li>
+
+            <!-- reservations -->
+            {% set active = request.path == "/dashboard/reservations" %}
+            <li class="{% if active %} active {% endif %}">
+                <a href="/dashboard/reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Reservations</span>
+                </a>
+            </li>
+
+            <!-- profile -->
+            {% set active = request.path == "/dashboard/profile" %}
+            <li class="{% if active %} active {% endif %}">
+                <a href="/dashboard/profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="/logout">
+            <button id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </a>
+    </div>
+</aside>

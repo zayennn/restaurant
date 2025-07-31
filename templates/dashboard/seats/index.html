@@ -1,0 +1,58 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}
+List Seats
+{% endblock %}
+
+{% block content %}
+<section id="seats" class="content-section">
+    <div class="section-header">
+        <h2>Seat Management</h2>
+        <button class="add-btn" id="addSeatBtn">
+            <i class="fas fa-plus"></i> Add Seat
+        </button>
+    </div>
+
+    <div class="seat-grid">
+        <div class="seat-card">
+            <div class="seat-number">Table 1</div>
+            <div class="seat-capacity">4 persons</div>
+            <div class="seat-status available">Available</div>
+            <div class="seat-actions">
+                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+
+        <div class="seat-card">
+            <div class="seat-number">Table 2</div>
+            <div class="seat-capacity">2 persons</div>
+            <div class="seat-status reserved">Reserved</div>
+            <div class="seat-actions">
+                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+
+        <div class="seat-card">
+            <div class="seat-number">Table 3</div>
+            <div class="seat-capacity">6 persons</div>
+            <div class="seat-status available">Available</div>
+            <div class="seat-actions">
+                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+
+        <div class="seat-card">
+            <div class="seat-number">VIP Room</div>
+            <div class="seat-capacity">10 persons</div>
+            <div class="seat-status occupied">Occupied</div>
+            <div class="seat-actions">
+                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

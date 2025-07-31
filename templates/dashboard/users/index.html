@@ -1,0 +1,70 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}
+List data users
+{% endblock %}
+
+{% block content %}
+<section id="users" class="content-section">
+    <div class="section-header">
+        <h2>User Management</h2>
+        <button class="add-btn" id="addUserBtn">
+            <i class="fas fa-plus"></i> Add User
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>john@example.com</td>
+                    <td>08123456789</td>
+                    <td>Admin</td>
+                    <td><span class="status active">Active</span></td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jane Smith</td>
+                    <td>jane@example.com</td>
+                    <td>08234567890</td>
+                    <td>Staff</td>
+                    <td><span class="status active">Active</span></td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Bob Johnson</td>
+                    <td>bob@example.com</td>
+                    <td>08345678901</td>
+                    <td>Customer</td>
+                    <td><span class="status inactive">Inactive</span></td>
+                    <td>
+                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
