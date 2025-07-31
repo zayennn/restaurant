@@ -1,0 +1,22 @@
+.swal2-horizontal {
+    display: flex !important;
+    align-items: center;
+    justify-content: start;
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+    width: fit-content;
+    min-width: 250px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.swal2-horizontal .swal2-icon {
+    margin: 0 !important;
+    width: 32px;
+    height: 32px;
+}
+
+.swal2-horizontal .swal2-title {
+    font-size: 16px;
+    margin: 0 !important;
+    text-align: left;
+}
