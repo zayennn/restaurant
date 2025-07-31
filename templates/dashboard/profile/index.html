@@ -1,115 +1,29 @@
-{% extends 'layouts/main.html' %}
+{% extends 'layouts/dashboard/profile/main.html' %}
 
-{% block title %}
-Profile
-{% endblock %}
-
-{% block content %}
-<section id="profile" class="content-section">
-    <div class="profile-header">
-        <h2>My Profile</h2>
-    </div>
-
-    <div class="profile-container">
-        <div class="profile-sidebar">
-            <div class="profile-avatar">
-                <img src="https://via.placeholder.com/150x150" alt="Profile Picture">
-                <button class="change-avatar-btn">Change Photo</button>
-            </div>
-
-            <div class="profile-nav">
-                <button class="profile-nav-btn active" data-target="personal-info">Personal
-                    Info</button>
-                <button class="profile-nav-btn" data-target="change-password">Change Password</button>
-                <button class="profile-nav-btn" data-target="settings">Settings</button>
-            </div>
+{% block content_profile %}
+<div id="personal-info" class="profile-tab">
+    <form class="profile-form">
+        <div class="form-group">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" value="{{ session['name'] }}">
         </div>
 
-        <div class="profile-content">
-            <!-- Personal Info Tab -->
-            <div id="personal-info" class="profile-tab active">
-                <form class="profile-form">
-                    <div class="form-group">
-                        <label for="full-name">Full Name</label>
-                        <input type="text" id="full-name" value="{{ session['name'] }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" value="{{ session['email'] }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" value="{{ session['phone_number'] }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <input type="text" id="role" value="{{ session['role'] }}" disabled>
-                    </div>
-
-                    <button type="submit" class="save-btn">Save Changes</button>
-                </form>
-            </div>
-
-            <!-- Change Password Tab -->
-            <div id="change-password" class="profile-tab">
-                <form class="profile-form">
-                    <div class="form-group">
-                        <label for="current-password">Current Password</label>
-                        <input type="password" id="current-password">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="new-password">New Password</label>
-                        <input type="password" id="new-password">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirm-password">Confirm New Password</label>
-                        <input type="password" id="confirm-password">
-                    </div>
-
-                    <button type="submit" class="save-btn">Change Password</button>
-                </form>
-            </div>
-
-            <!-- Settings Tab -->
-            <div id="settings" class="profile-tab">
-                <form class="profile-form">
-                    <div class="form-group">
-                        <label for="language">Language</label>
-                        <select id="language">
-                            <option value="en">English</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="timezone">Timezone</label>
-                        <select id="timezone">
-                            <option value="utc">UTC</option>
-                            <option value="est">Eastern Time (EST)</option>
-                            <option value="pst">Pacific Time (PST)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="notifications" checked>
-                        <label for="notifications">Enable Email Notifications</label>
-                    </div>
-
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="dark-mode">
-                        <label for="dark-mode">Enable Dark Mode</label>
-                    </div>
-
-                    <button type="submit" class="save-btn">Save Settings</button>
-                </form>
-            </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" value="{{ session['email'] }}">
         </div>
-    </div>
-</section>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" value="{{ session['phone_number'] }}">
+        </div>
+
+        <div class="form-group">
+            <label for="role">Role</label>
+            <input type="text" id="role" value="{{ session['role'] }}" disabled>
+        </div>
+
+        <button type="submit" class="save-btn">Save Changes</button>
+    </form>
+</div>
 {% endblock %}

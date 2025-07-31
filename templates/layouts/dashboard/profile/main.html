@@ -1,0 +1,23 @@
+{% extends 'layouts/dashboard/main.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+<section id="profile" class="content-section">
+    <div class="profile-header">
+        <h2>My Profile</h2>
+    </div>
+
+    <div class="profile-container">
+        {% include 'layouts/dashboard/profile/sidebar-profile.html' %}
+
+        <div class="profile-content">
+            {% block content_profile %}
+                
+            {% endblock %}
+        </div>
+    </div>
+</section>
+{% endblock %}

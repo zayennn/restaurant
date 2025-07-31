@@ -145,9 +145,55 @@ def reservations():
 
 
 # profile
-@app.route('/dashboard/profile')
+@app.route('/dashboard/profile/personal-info')
 def profile():
     return render_template('dashboard/profile/index.html')
+
+# change account password 
+@app.route('/dashboard/profile/change-password', methods=['GET', 'POST'])
+def change_account_password():
+    if 'logged_in' not in session or not session['logged_in']:
+        flash('Silakan login terlebih dahulu', 'danger')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        if not current_password or not new_password or not confirm_password:
+            flash('Semua field harus diisi', 'danger')
+            return render_template('dashboard/profile/changePassword/index.html')
+
+        if new_password != confirm_password:
+            flash('Konfirmasi password tidak sesuai!', 'danger')
+            return render_template('dashboard/profile/changePassword/index.html')
+
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("SELECT password FROM users WHERE email = %s", (session['email'],))
+        user = cur.fetchone()
+        cur.close()
+
+        if not user or not bcrypt.check_password_hash(user['password'], current_password):
+            flash('Password lama tidak sesuai!', 'danger')
+            return render_template('dashboard/profile/changePassword/index.html')
+
+        hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE users SET password = %s WHERE email = %s", 
+                   (hashed_password, session['email']))
+        mysql.connection.commit()
+        cur.close()
+
+        flash('Password berhasil diubah!', 'success')
+        # return redirect(url_for('change_account_password'))
+
+    return render_template('dashboard/profile/changePassword/index.html')
+
+# profile settings
+@app.route('/dashboard/profile/settings', methods=['GET', 'POST'])
+def profile_settings():
+    return render_template('dashboard/profile/settingsProfile/index.html')
 
 
 if __name__ == '__main__':

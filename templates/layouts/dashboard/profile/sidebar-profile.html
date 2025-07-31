@@ -1,0 +1,19 @@
+<div class="profile-sidebar">
+    <div class="profile-avatar">
+        <img src="https://via.placeholder.com/150x150" alt="Profile Picture">
+        <button class="change-avatar-btn">Change Photo</button>
+    </div>
+
+    <div class="profile-nav">
+        {% set active = request.path == "/dashboard/profile/personal-info" %}
+        <a href="/dashboard/profile/personal-info" class="profile-nav-btn {% if active %} active {% endif %}" data-target="personal-info">Personal
+            Info</a>
+
+        {% set active = request.path == "/dashboard/profile/change-password" %}
+        <a href="/dashboard/profile/change-password" class="profile-nav-btn {% if active %} active {% endif %}" data-target="change-password">Change
+            Password</a>
+
+        {% set active = request.path == "/dashboard/profile/settings" %}
+        <a href="/dashboard/profile/settings" class="profile-nav-btn {% if active %} active {% endif %}" data-target="settings">Settings</a>
+    </div>
+</div>

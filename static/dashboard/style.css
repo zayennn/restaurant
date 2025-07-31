@@ -674,10 +674,6 @@ body {
 }
 
 .profile-tab {
-    display: none;
-}
-
-.profile-tab.active {
     display: block;
 }
 

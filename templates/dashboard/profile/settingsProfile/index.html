@@ -1,0 +1,41 @@
+{% extends 'layouts/dashboard/profile/main.html' %}
+
+{% block title %}
+Settings
+{% endblock %}
+
+{% block content_profile %}
+<div id="settings" class="profile-tab">
+    <form class="profile-form">
+        <div class="form-group">
+            <label for="language">Language</label>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="timezone">Timezone</label>
+            <select id="timezone">
+                <option value="utc">UTC</option>
+                <option value="est">Eastern Time (EST)</option>
+                <option value="pst">Pacific Time (PST)</option>
+            </select>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="notifications" checked>
+            <label for="notifications">Enable Email Notifications</label>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="dark-mode">
+            <label for="dark-mode">Enable Dark Mode</label>
+        </div>
+
+        <button type="submit" class="save-btn">Save Settings</button>
+    </form>
+</div>
+{% endblock %}

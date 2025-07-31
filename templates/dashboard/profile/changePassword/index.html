@@ -1,0 +1,28 @@
+{% extends 'layouts/dashboard/profile/main.html' %}
+
+{% block title %}
+Change Account Password
+{% endblock %}
+
+{% block content_profile %}
+<div id="change-password" class="profile-tab">
+    <form class="profile-form" method="POST">
+        <div class="form-group">
+            <label for="current-password">Current Password</label>
+            <input type="password" name="current_password" id="current-password">
+        </div>
+
+        <div class="form-group">
+            <label for="new-password">New Password</label>
+            <input type="password" name="new_password" id="new-password">
+        </div>
+
+        <div class="form-group">
+            <label for="confirm-password">Confirm New Password</label>
+            <input type="password" name="confirm_password" id="confirm-password">
+        </div>
+
+        <button type="submit" class="save-btn">Change Password</button>
+    </form>
+</div>
+{% endblock %}
