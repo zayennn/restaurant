@@ -4,7 +4,7 @@
 List Menus
 {% endblock %}
 
-{% block name %}
+{% block content %}
 <section id="menu" class="content-section">
     <div class="section-header">
         <h2>Menu Management</h2>
@@ -79,47 +79,4 @@ List Menus
         </div>
     </div>
 </section>
-
-<div class="modal" id="userModal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h3>Add New User</h3>
-        <form id="userForm">
-            <div class="form-group">
-                <label for="modal-full-name">Full Name</label>
-                <input type="text" id="modal-full-name" required>
-            </div>
-
-            <div class="form-group">
-                <label for="modal-email">Email</label>
-                <input type="email" id="modal-email" required>
-            </div>
-
-            <div class="form-group">
-                <label for="modal-phone">Phone Number</label>
-                <input type="tel" id="modal-phone" required>
-            </div>
-
-            <div class="form-group">
-                <label for="modal-role">Role</label>
-                <select id="modal-role" required>
-                    <option value="">Select Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="staff">Staff</option>
-                    <option value="customer">Customer</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="modal-password">Password</label>
-                <input type="password" id="modal-password" required>
-            </div>
-
-            <div class="form-actions">
-                <button type="button" class="cancel-btn">Cancel</button>
-                <button type="submit" class="submit-btn">Save User</button>
-            </div>
-        </form>
-    </div>
-</div>
 {% endblock %}

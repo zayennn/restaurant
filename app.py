@@ -46,7 +46,7 @@ def login():
         email = request.form['email']
         password = request.form['password']
         
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)  # ← penting!
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
@@ -59,7 +59,11 @@ def login():
             session['role'] = user['role']
 
             flash('Anda berhasil login!', 'success')
-            return redirect(url_for('dashboard'))
+            if session['role'] == 'admin' or session['role'] == 'petugas':
+                return redirect(url_for('dashboard'))
+            else:
+                return redirect(url_for('seats'))
+                
         else:
             flash('Email atau password salah', 'danger')
     return render_template('auth/login.html')
@@ -145,9 +149,40 @@ def reservations():
 
 
 # profile
-@app.route('/dashboard/profile/personal-info')
-def profile():
+@app.route('/dashboard/profile/personal-info', methods=['GET', 'POST'])
+@login_required
+def personal_info():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        phone_number = request.form['phone_number']
+
+        if not phone_number.isdigit() or len(phone_number) < 10:
+            flash("Nomor HP tidak valid", "danger")
+            return redirect(url_for('personal_info'))
+
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("SELECT * FROM users WHERE email = %s AND email != %s", (email, session['email']))
+        existing = cur.fetchone()
+        if existing:
+            flash("Email sudah digunakan oleh pengguna lain", "danger")
+            return redirect(url_for('personal_info'))
+
+        cur.execute("""
+            UPDATE users SET name = %s, email = %s, phone_number = %s WHERE email = %s
+        """, (name, email, phone_number, session['email']))
+        mysql.connection.commit()
+        cur.close()
+
+        session['name'] = name
+        session['email'] = email
+        session['phone_number'] = phone_number
+
+        flash('Profil berhasil diperbarui!', 'success')
+        return redirect(url_for('personal_info'))
+
     return render_template('dashboard/profile/index.html')
+
 
 # change account password 
 @app.route('/dashboard/profile/change-password', methods=['GET', 'POST'])
@@ -186,7 +221,7 @@ def change_account_password():
         cur.close()
 
         flash('Password berhasil diubah!', 'success')
-        # return redirect(url_for('change_account_password'))
+        return redirect(url_for('change_account_password'))
 
     return render_template('dashboard/profile/changePassword/index.html')
 
@@ -194,6 +229,51 @@ def change_account_password():
 @app.route('/dashboard/profile/settings', methods=['GET', 'POST'])
 def profile_settings():
     return render_template('dashboard/profile/settingsProfile/index.html')
+
+
+# update image profile
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/dashboard/profile/upload-photo', methods=['POST'])
+@login_required
+def upload_profile_photo():
+    if 'photo' not in request.files:
+        flash('Tidak ada file yang dipilih', 'danger')
+        return redirect(url_for('personal_info'))
+
+    file = request.files['photo']
+
+    if file.filename == '':
+        flash('File belum dipilih', 'danger')
+        return redirect(url_for('personal_info'))
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE users SET photo = %s WHERE email = %s", (f'uploads/{filename}', session['email']))
+        mysql.connection.commit()
+        cur.close()
+
+        session['photo'] = f'uploads/{filename}'
+
+        flash('Foto profil berhasil diubah!', 'success')
+        return redirect(url_for('personal_info'))
+    else:
+        flash('Format file tidak didukung (png/jpg/jpeg/gif)', 'danger')
+        return redirect(url_for('personal_info'))
+
 
 
 if __name__ == '__main__':

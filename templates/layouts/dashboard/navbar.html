@@ -5,13 +5,14 @@
     </div>
 
     <div class="user-info">
-        <div class="notifications">
+        <!-- <div class="notifications">
             <i class="fas fa-bell"></i>
             <span class="badge">3</span>
-        </div>
+        </div> -->
         <div class="user-avatar">
-            <img src="https://via.placeholder.com/40x40" alt="User Avatar">
-            <span>Admin</span>
+            <img src="{{ url_for('static', filename=session.get('photo', 'uploads/default.png')) }}"
+                alt="Profile Picture">
+            <!-- <span>Admin</span> -->
         </div>
     </div>
 </header>
