@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from extensions import mysql, bcrypt
 import MySQLdb.cursors
+from middlewares import guest_only, login_required
 
 def create_login_session(user):
     session['logged_in'] = True
@@ -13,6 +14,7 @@ def create_login_session(user):
 bp = Blueprint('auth', __name__)
 
 @bp.route('/', methods=['GET', 'POST'])
+@guest_only
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -35,6 +37,7 @@ def login():
     return render_template('auth/login.html')
 
 @bp.route('/register', methods=['GET', 'POST'])
+@guest_only
 def register():
     if request.method == 'POST':
         name = request.form['name']
@@ -69,6 +72,7 @@ def register():
     return render_template('auth/register.html')
 
 @bp.route('/logout')
+@login_required
 def logout():
     session.clear()
     flash("Anda berhasil logout!", "success")

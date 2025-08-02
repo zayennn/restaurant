@@ -19,8 +19,13 @@ List Seats
             <div class="seat-capacity">4 persons</div>
             <div class="seat-status available">Available</div>
             <div class="seat-actions">
-                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                <button class="reserve-btn">
+                    <i class="fas fa-calendar-plus"></i> Reservasi
+                </button>
+                {% if session['role'] == 'petugas' %}
+                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                {% endif %}
             </div>
         </div>
 
@@ -29,8 +34,13 @@ List Seats
             <div class="seat-capacity">2 persons</div>
             <div class="seat-status reserved">Reserved</div>
             <div class="seat-actions">
-                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                <button class="reserve-btn">
+                    <i class="fas fa-calendar-plus"></i> Reservasi
+                </button>
+                {% if session['role'] == 'petugas' %}
+                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                {% endif %}
             </div>
         </div>
 
@@ -39,8 +49,13 @@ List Seats
             <div class="seat-capacity">6 persons</div>
             <div class="seat-status available">Available</div>
             <div class="seat-actions">
-                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                <button class="reserve-btn">
+                    <i class="fas fa-calendar-plus"></i> Reservasi
+                </button>
+                {% if session['role'] == 'petugas' %}
+                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                {% endif %}
             </div>
         </div>
 

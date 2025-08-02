@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from extensions import mysql
+from extensions import mysql, bcrypt
 import MySQLdb.cursors
 import os
 from werkzeug.utils import secure_filename
@@ -68,9 +68,9 @@ def upload_photo():
 # change account password 
 @bp.route('/change-password', methods=['GET', 'POST'])
 def change_account_password():
-    if 'logged_in' not in session or not session['logged_in']:
-        flash('Silakan login terlebih dahulu', 'danger')
-        return redirect(url_for('login'))
+    # if 'logged_in' not in session or not session['logged_in']:
+    #     flash('Silakan login terlebih dahulu', 'danger')
+    #     return redirect(url_for('login'))
 
     if request.method == 'POST':
         current_password = request.form.get('current_password')
@@ -102,7 +102,7 @@ def change_account_password():
         cur.close()
 
         flash('Password berhasil diubah!', 'success')
-        return redirect(url_for('change_account_password'))
+        return redirect(url_for('profile.change_account_password'))
 
     return render_template('dashboard/profile/changePassword/index.html')
 
