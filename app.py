@@ -1,7 +1,7 @@
 from flask import Flask
 from config import Config
 from extensions import mysql, bcrypt
-from routes import auth, dashboard, users, seats, menus, reservations, profile
+from routes import auth, dashboard, users, seats, menus, reservations, profile, cart
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -17,6 +17,7 @@ app.register_blueprint(seats.bp)
 app.register_blueprint(menus.bp)
 app.register_blueprint(reservations.bp)
 app.register_blueprint(profile.bp)
+app.register_blueprint(cart.bp)
 
 if __name__ == '__main__':
     app.run(debug=True)

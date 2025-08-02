@@ -7,7 +7,7 @@
         <ul>
             <!-- home -->
             {% if session['role'] == 'admin' or session['role'] == 'petugas' %}
-            {% set active = request.path == "/dashboard" %}
+            {% set active = request.path == "/dashboard/" in request.path %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard">
                     <i class="fas fa-home"></i>
@@ -19,7 +19,7 @@
 
             {% if session['role'] == 'admin' %}
             <!-- users -->
-            {% set active = request.path == "/dashboard/users" %}
+            {% set active = request.path == "/dashboard/users/" %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/users">
                     <i class="fas fa-users"></i>
@@ -29,7 +29,7 @@
             {% endif %}
 
             <!-- seats -->
-            {% set active = request.path == "/dashboard/seats" %}
+            {% set active = request.path == "/dashboard/seats/" %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/seats">
                     <i class="fas fa-chair"></i>
@@ -38,7 +38,7 @@
             </li>
 
             <!-- menus -->
-            {% set active = request.path == "/dashboard/menus" %}
+            {% set active = request.path == "/dashboard/menus/" %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/menus">
                     <i class="fas fa-utensils"></i>
@@ -48,7 +48,7 @@
 
             {% if session['role'] == 'admin' or session['role'] == 'petugas' %}
             <!-- reservations -->
-            {% set active = request.path == "/dashboard/reservations" %}
+            {% set active = request.path == "/dashboard/reservations/" %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/reservations">
                     <i class="fas fa-calendar-check"></i>
@@ -57,8 +57,18 @@
             </li>
             {% endif %}
 
+            <!-- cart -->
+            {% set active = request.path == "/dashboard/cart/" %}
+            <li class="{% if active %} active {% endif %}" id="cart">
+                <a href="/dashboard/cart/">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>My Cart</span>
+                    <span class="cart-badge {% if active %} active {% endif %}">3</span>
+                </a>
+            </li>
+
             <!-- profile -->
-            {% set active = request.path == "/dashboard/profile/personal-info" %}
+            {% set active = request.path == "/dashboard/profile/personal-info/" in request.path %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/profile/personal-info">
                     <i class="fas fa-user-circle"></i>

@@ -8,9 +8,9 @@ List data users
 <section id="users" class="content-section">
     <div class="section-header">
         <h2>User Management</h2>
-        <button class="add-btn" id="addUserBtn">
+        <a href="{{ url_for('users.create_user') }}" class="add-btn" id="addUserBtn">
             <i class="fas fa-plus"></i> Add User
-        </button>
+        </a>
     </div>
 
     <div class="table-container">
@@ -27,42 +27,31 @@ List data users
                 </tr>
             </thead>
             <tbody>
+                {% for user in users %}
                 <tr>
-                    <td>1</td>
-                    <td>John Doe</td>
-                    <td>john@example.com</td>
-                    <td>08123456789</td>
-                    <td>Admin</td>
-                    <td><span class="status active">Active</span></td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone_number }}</td>
+                    <td>{{ user.role }}</td>
                     <td>
-                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                        <span class="status {{ 'active' if user.role != 'user' else 'inactive' }}">
+                            {{ 'Active' if user.role != 'user' else 'Inactive' }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('users.edit_user', id=user.id) }}" class="action-btn edit"><i
+                                class="fas fa-edit"></i></a>
+                        <form action="{{ url_for('users.delete_user', id=user.id) }}" method="POST"
+                            style="display:inline;">
+                            <button type="submit" class="action-btn delete"
+                                onclick="return confirm('Yakin mau hapus user ini?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jane Smith</td>
-                    <td>jane@example.com</td>
-                    <td>08234567890</td>
-                    <td>Staff</td>
-                    <td><span class="status active">Active</span></td>
-                    <td>
-                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Bob Johnson</td>
-                    <td>bob@example.com</td>
-                    <td>08345678901</td>
-                    <td>Customer</td>
-                    <td><span class="status inactive">Inactive</span></td>
-                    <td>
-                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

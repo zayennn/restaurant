@@ -3,13 +3,14 @@ from extensions import mysql, bcrypt
 import MySQLdb.cursors
 import os
 from werkzeug.utils import secure_filename
+from config import Config
 
 bp = Blueprint('profile', __name__, url_prefix='/dashboard/profile')
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
 
-@bp.route('/personal-info', methods=['GET', 'POST'])
+@bp.route('/personal-info/', methods=['GET', 'POST'])
 def personal_info():
     if request.method == 'POST':
         name = request.form['name']

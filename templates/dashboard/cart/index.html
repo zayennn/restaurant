@@ -1,0 +1,89 @@
+{% extends 'layouts/dashboard/main.html' %}
+
+{% block title %}
+Shopping Cart
+{% endblock %}
+
+{% block content %}
+<section id="cart" class="content-section">
+    <div class="section-header">
+        <h2>Your Order</h2>
+        <a href="/dashboard/menus" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+    </div>
+
+    <div class="cart-container">
+        <div class="cart-items">
+            <div class="cart-header">
+                <h3>Selected Items</h3>
+                <span class="clear-cart">Clear All</span>
+            </div>
+            
+            <div class="cart-item-list">
+                <!-- Item 1 -->
+                <div class="cart-item">
+                    <div class="item-image">
+                        <img src="https://via.placeholder.com/80x80?text=Food" alt="Item Image">
+                    </div>
+                    <div class="item-details">
+                        <h4>Spaghetti Carbonara</h4>
+                        <p class="item-price">$12.99</p>
+                        <div class="item-quantity">
+                            <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                            <span class="quantity">1</span>
+                            <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <button class="item-remove"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="cart-item">
+                    <div class="item-image">
+                        <img src="https://via.placeholder.com/80x80?text=Drink" alt="Item Image">
+                    </div>
+                    <div class="item-details">
+                        <h4>Orange Juice</h4>
+                        <p class="item-price">$3.50</p>
+                        <div class="item-quantity">
+                            <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                            <span class="quantity">2</span>
+                            <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <button class="item-remove"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-details">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>$19.99</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (10%)</span>
+                    <span>$2.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>$21.99</span>
+                </div>
+            </div>
+            
+            <div class="reservation-info">
+                <h4>Reservation Details</h4>
+                <p><strong>Table:</strong> VIP Room</p>
+                <p><strong>Date:</strong> June 15, 2023</p>
+                <p><strong>Time:</strong> 19:00</p>
+                <p><strong>Guests:</strong> 4 persons</p>
+            </div>
+            
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+</section>
+{% endblock %}

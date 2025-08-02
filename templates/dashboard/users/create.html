@@ -1,0 +1,68 @@
+{% extends 'layouts/dashboard/main.html' %}
+
+{% block title %}
+Create New Staff
+{% endblock %}
+
+{% block content %}
+<section id="create-user" class="content-section">
+    <div class="section-header">
+        <h2>Create New Staff</h2>
+        <a href="{{ url_for('users.users') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+    </div>
+
+    <div class="create-user-form">
+        <form method="POST" action="{{ url_for('users.create_user') }}">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" placeholder="Enter full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter email address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-input">
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                    <button type="button" class="toggle-password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <div class="password-input">
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+                    <button type="button" class="toggle-password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="petugas" selected>Petugas</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="reset" class="cancel-btn">Reset</button>
+                <button type="submit" class="submit-btn">Create Staff</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
