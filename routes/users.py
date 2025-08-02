@@ -7,11 +7,11 @@ bp = Blueprint('users', __name__, url_prefix='/dashboard/users')
 @bp.route('/')
 def users():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM users")
-    user_data = cur.fetchall()
+    cur.execute("SELECT * FROM users ORDER BY id DESC")
+    users = cur.fetchall()
     cur.close()
+    return render_template('dashboard/users/index.html', users=users)
 
-    return render_template('dashboard/users/index.html', users=user_data)
 
 @bp.route('/create', methods=['GET', 'POST'])
 def create_user():

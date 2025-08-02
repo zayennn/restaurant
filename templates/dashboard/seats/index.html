@@ -8,66 +8,40 @@ List Seats
 <section id="seats" class="content-section">
     <div class="section-header">
         <h2>Seat Management</h2>
-        <button class="add-btn" id="addSeatBtn">
+        {% if session['role'] == 'petugas' or session['role'] == 'admin' %}
+        <a href="{{ url_for('seats.create_seat') }}" class="add-btn" id="addSeatBtn">
             <i class="fas fa-plus"></i> Add Seat
-        </button>
+        </a>
+        {% endif %}
     </div>
 
     <div class="seat-grid">
+        {% for seat in seats %}
         <div class="seat-card">
-            <div class="seat-number">Table 1</div>
-            <div class="seat-capacity">4 persons</div>
-            <div class="seat-status available">Available</div>
+            <div class="seat-number {% if 'vip' in seat.name|lower %}vip{% endif %}">{{ seat.name }}</div>
+            <div class="seat-capacity">{{ seat.capacity }} persons</div>
+            <div class="seat-status {{ seat.status }}">{{ seat.status.title() }}</div>
             <div class="seat-actions">
+
+                {% if session['role'] == 'user' %}
                 <button class="reserve-btn">
-                    <i class="fas fa-calendar-plus"></i> Reservasi
+                    Reserve
                 </button>
-                {% if session['role'] == 'petugas' %}
-                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                {% endif %}
+
+                {% if session['role'] == 'petugas' or session['role'] == 'admin' %}
+                <form method="POST" action="{{ url_for('seats.delete_seat', id=seat.id) }}" style="display:inline;">
+                    <a href="{{ url_for('seats.edit_seat', id=seat.id) }}" class="action-btn edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button type="submit" class="action-btn delete" onclick="return confirm('Yakin hapus?')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
                 {% endif %}
             </div>
         </div>
-
-        <div class="seat-card">
-            <div class="seat-number">Table 2</div>
-            <div class="seat-capacity">2 persons</div>
-            <div class="seat-status reserved">Reserved</div>
-            <div class="seat-actions">
-                <button class="reserve-btn">
-                    <i class="fas fa-calendar-plus"></i> Reservasi
-                </button>
-                {% if session['role'] == 'petugas' %}
-                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="seat-card">
-            <div class="seat-number">Table 3</div>
-            <div class="seat-capacity">6 persons</div>
-            <div class="seat-status available">Available</div>
-            <div class="seat-actions">
-                <button class="reserve-btn">
-                    <i class="fas fa-calendar-plus"></i> Reservasi
-                </button>
-                {% if session['role'] == 'petugas' %}
-                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="seat-card">
-            <div class="seat-number">VIP Room</div>
-            <div class="seat-capacity">10 persons</div>
-            <div class="seat-status occupied">Occupied</div>
-            <div class="seat-actions">
-                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}

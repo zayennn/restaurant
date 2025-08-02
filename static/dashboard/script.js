@@ -26,3 +26,6 @@ document.querySelector('form').addEventListener('submit', function(e) {
         alert('Password and confirmation password do not match!');
     }
 });
+
+
+// seat

@@ -1,0 +1,46 @@
+{% extends 'layouts/dashboard/main.html' %}
+
+{% block title %}
+Edit Table - {{ seat.name }}
+{% endblock %}
+
+{% block content %}
+<section id="create-seat" class="content-section">
+    <div class="section-header">
+        <h2>Edit Table</h2>
+        <a href="{{ url_for('seats.seats') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Tables
+        </a>
+    </div>
+
+    <div class="create-seat-form">
+        <form method="POST" action="{{ url_for('seats.edit_seat', id=seat.id) }}">
+            <div class="form-group">
+                <label for="table_name">Table Name/Number</label>
+                <input type="text" id="table_name" name="name" value="{{ seat.name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="capacity">Capacity (Number of People)</label>
+                <input type="number" id="capacity" name="capacity" min="1" max="20" value="{{ seat.capacity }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" required>
+                    <option value="">Select Status</option>
+                    <option value="available" {% if seat.status=='available' %}selected{% endif %}>Available</option>
+                    <option value="reserved" {% if seat.status=='reserved' %}selected{% endif %}>Reserved</option>
+                    <option value="occupied" {% if seat.status=='occupied' %}selected{% endif %}>Occupied</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('seats.seats') }}" class="cancel-btn">Cancel</a>
+                <button type="submit" class="submit-btn">Update Table</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

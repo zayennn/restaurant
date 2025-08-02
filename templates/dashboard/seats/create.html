@@ -1,0 +1,51 @@
+{% extends 'layouts/dashboard/main.html' %}
+
+{% block title %}
+Create New Table
+{% endblock %}
+
+{% block content %}
+<section id="create-seat" class="content-section">
+    <div class="section-header">
+        <h2>Create New Table</h2>
+        <a href="{{ url_for('seats.seats') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Tables
+        </a>
+    </div>
+
+    <div class="create-seat-form">
+        <form method="POST" action="{{ url_for('seats.create_seat') }}">
+            <div class="form-group">
+                <label for="table_name">Table Name/Number</label>
+                <input type="text" id="table_name" name="name" placeholder="e.g. Table 1, VIP Room" required>
+            </div>
+
+            <div class="form-group">
+                <label for="capacity">Capacity (Number of People)</label>
+                <input type="number" id="capacity" name="capacity" min="1" max="20" placeholder="e.g. 4" required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" required>
+                    <option value="">Select Status</option>
+                    <option value="available">Available</option>
+                    <option value="reserved">Reserved</option>
+                    <option value="occupied">Occupied</option>
+                </select>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="description">Description (Optional)</label>
+                <textarea id="description" name="description" rows="3"
+                    placeholder="Any additional notes about this table"></textarea>
+            </div> -->
+
+            <div class="form-actions">
+                <button type="reset" class="cancel-btn">Reset</button>
+                <button type="submit" class="submit-btn">Create Table</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

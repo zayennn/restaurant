@@ -422,6 +422,10 @@ body {
     margin-bottom: 5px;
 }
 
+.seat-number.vip {
+    color: rgb(225, 192, 0);
+}
+
 .seat-capacity {
     font-size: 13px;
     color: #7f8c8d;
@@ -1246,4 +1250,94 @@ body {
 
 .back-btn:hover {
     color: #f7616b;
+}
+
+
+/* create seat */
+/* Create Seat Form Styles */
+.create-seat-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.create-seat-form .form-group {
+    margin-bottom: 20px;
+}
+
+.create-seat-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.create-seat-form input,
+.create-seat-form select,
+.create-seat-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.create-seat-form input:focus,
+.create-seat-form select:focus,
+.create-seat-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.create-seat-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.create-seat-form .error-message {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.create-seat-form .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.create-seat-form .cancel-btn {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.create-seat-form .cancel-btn:hover {
+    background-color: #e9ecef;
+}
+
+.create-seat-form .submit-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.create-seat-form .submit-btn:hover {
+    background-color: #2980b9;
+}
+
+.action-btn.reserve-btn {
+
 }
