@@ -8,75 +8,60 @@ List Menus
 <section id="menu" class="content-section">
     <div class="section-header">
         <h2>Menu Management</h2>
-        <button class="add-btn" id="addMenuBtn">
-            <i class="fas fa-plus"></i> Add Item
-        </button>
+        <a href="{{ url_for('menus.create_menu') }}" class="add-btn" id="addMenuBtn">
+            <i class="fas fa-plus"></i> Add New Menu
+        </a>
     </div>
 
-    <div class="menu-categories">
-        <button class="category-btn active">All</button>
-        <button class="category-btn">Appetizers</button>
-        <button class="category-btn">Main Course</button>
-        <button class="category-btn">Desserts</button>
-        <button class="category-btn">Drinks</button>
+    <div class="menu-categories" id="filterButtons">
+        <button class="category-btn active" data-filter="all">All</button>
+        <button class="category-btn" data-filter=".appetizer">Appetizers</button>
+        <button class="category-btn" data-filter=".main-course">Main Course</button>
+        <button class="category-btn" data-filter=".dessert">Desserts</button>
+        <button class="category-btn" data-filter=".drink">Drinks</button>
     </div>
 
-    <div class="menu-items-grid">
-        <div class="menu-item-card">
+    <div class="menu-items-grid" id="menuMixContainer">
+        {% for menu in menus %}
+        <div class="menu-item-card mix {{ menu.category|lower|replace(' ', '-') }}">
             <div class="menu-item-image">
-                <img src="https://via.placeholder.com/300x200?text=Spaghetti+Carbonara" alt="Spaghetti Carbonara">
+                <img src="{{ url_for('static', filename='uploads/menus/' + menu.image) if menu.image else url_for('static', filename='images/default-food.png') }}"
+                    alt="{{ menu.name }}">
             </div>
             <div class="menu-item-details">
-                <h3>Spaghetti Carbonara</h3>
-                <p class="menu-item-description">Classic Italian pasta with creamy sauce and bacon.</p>
+                <h3>{{ menu.name }}</h3>
+                <small class="menu-item-qty">Qty: {{ menu.qty }}</small>
+                <p class="menu-item-description">{{ menu.description }}</p>
                 <div class="menu-item-meta">
-                    <span class="menu-item-price">$12.99</span>
-                    <span class="menu-item-category">Main Course</span>
+                    <span class="menu-item-price">Rp{{ '{:,.0f}'.format(menu.price | float) }}</span>
+                    <span class="menu-item-category">{{ menu.category }}</span>
                 </div>
                 <div class="menu-item-actions">
-                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    <form method="POST" action="{{ url_for('menus.delete_menu', id=menu.id) }}"
+                        onsubmit="return confirm('Yakin ingin hapus menu ini?')">
+                        <a href="{{ url_for('menus.edit_menu', id=menu.id) }}" class="action-btn edit"><i
+                                class="fas fa-edit"></i></a>
+                        <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="menu-item-card">
-            <div class="menu-item-image">
-                <img src="https://via.placeholder.com/300x200?text=Caesar+Salad" alt="Caesar Salad">
-            </div>
-            <div class="menu-item-details">
-                <h3>Caesar Salad</h3>
-                <p class="menu-item-description">Fresh romaine lettuce with Caesar dressing and
-                    croutons.</p>
-                <div class="menu-item-meta">
-                    <span class="menu-item-price">$8.99</span>
-                    <span class="menu-item-category">Appetizer</span>
-                </div>
-                <div class="menu-item-actions">
-                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="menu-item-card">
-            <div class="menu-item-image">
-                <img src="https://via.placeholder.com/300x200?text=Chocolate+Lava+Cake" alt="Chocolate Lava Cake">
-            </div>
-            <div class="menu-item-details">
-                <h3>Chocolate Lava Cake</h3>
-                <p class="menu-item-description">Warm chocolate cake with a molten center, served with
-                    vanilla ice cream.</p>
-                <div class="menu-item-meta">
-                    <span class="menu-item-price">$6.99</span>
-                    <span class="menu-item-category">Dessert</span>
-                </div>
-                <div class="menu-item-actions">
-                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const mixer = mixitup('#menuMixContainer');
+
+    const filterBtns = document.querySelectorAll('#filterButtons .category-btn');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+</script>
 {% endblock %}

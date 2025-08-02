@@ -1,0 +1,85 @@
+{% extends 'layouts/dashboard/main.html' %}
+
+{% block title %}
+Edit Menu - {{ menu.name }}
+{% endblock %}
+
+{% block content %}
+<section id="edit-menu" class="content-section">
+    <div class="section-header">
+        <h2>Edit Menu</h2>
+        <a href="{{ url_for('menus.menus') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Menu
+        </a>
+    </div>
+
+    <div class="menu-form-container">
+        <form method="POST" action="" enctype="multipart/form-data">
+            <div class="form-row">
+                <!-- Image Upload -->
+                <div class="form-group image-upload-group">
+                    <label for="menu_image">Menu Image</label>
+                    <div class="image-upload-container">
+                        <div class="image-preview" id="imagePreview">
+                            <img src="{{ url_for('static', filename='uploads/menus/' + menu.image) if menu.image else url_for('static', filename='images/default-food.png') }}"
+                                alt="Preview" class="image-preview__image">
+                            <span class="image-preview__default-text" style="display: none;">Image Preview</span>
+                        </div>
+                        <input type="file" name="menu_image" id="menu_image" accept="image/*">
+                        <label for="menu_image" class="upload-btn">
+                            <i class="fas fa-cloud-upload-alt"></i> Change Image
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Menu Details -->
+                <div class="form-group menu-details-group">
+                    <div class="form-group">
+                        <label for="name">Menu Name</label>
+                        <input type="text" id="name" name="name" value="{{ menu.name }}"
+                            placeholder="e.g. Spaghetti Carbonara" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="Appetizers" {% if menu.category=='Appetizers' %}selected{% endif %}>
+                                Appetizers</option>
+                            <option value="Main Course" {% if menu.category=='Main Course' %}selected{% endif %}>Main
+                                Course</option>
+                            <option value="Desserts" {% if menu.category=='Desserts' %}selected{% endif %}>Desserts
+                            </option>
+                            <option value="Drinks" {% if menu.category=='Drinks' %}selected{% endif %}>Drinks</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qty">Quantity</label>
+                        <input type="number" id="qty" name="qty" value="{{ menu.qty }}" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <div class="price-input">
+                            <span class="currency">Rp</span>
+                            <input type="number" id="price" name="price" value="{{ menu.price }}"
+                                placeholder="e.g. 50000" min="1000" step="1000" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Describe the menu item..." rows="4"
+                    required>{{ menu.description }}</textarea>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('menus.menus') }}" class="cancel-btn">Cancel</a>
+                <button type="submit" class="submit-btn">Update Menu</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

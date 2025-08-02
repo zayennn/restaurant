@@ -551,12 +551,18 @@ body {
     font-size: 16px;
     color: #2c3e50;
     margin-bottom: 5px;
+    text-transform: capitalize;
+}
+
+.menu-item-qty {
+    font-size: 12px;
+    color: #7f8c8d;
 }
 
 .menu-item-description {
     font-size: 13px;
     color: #7f8c8d;
-    margin-bottom: 10px;
+    margin: 10px 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -1338,6 +1344,129 @@ body {
     background-color: #2980b9;
 }
 
-.action-btn.reserve-btn {
+/* Menu Form Styles */
+.menu-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
 
+.form-row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.image-upload-group {
+    flex: 1;
+}
+
+.menu-details-group {
+    flex: 2;
+}
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-preview {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    border: 2px dashed #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.image-preview__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.image-preview__default-text {
+    font-size: 14px;
+    color: #95a5a6;
+}
+
+.image-preview.active .image-preview__image {
+    display: block;
+}
+
+.image-preview.active .image-preview__default-text {
+    display: none;
+}
+
+.upload-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.upload-btn:hover {
+    background-color: #45a049;
+}
+
+#menu_image {
+    display: none;
+}
+
+.price-input {
+    position: relative;
+}
+
+.price-input .currency {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+}
+
+.price-input input {
+    padding-left: 40px;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .image-preview {
+        width: 150px;
+        height: 150px;
+    }
 }

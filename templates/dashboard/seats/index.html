@@ -23,11 +23,14 @@ List Seats
             <div class="seat-status {{ seat.status }}">{{ seat.status.title() }}</div>
             <div class="seat-actions">
 
-                {% if session['role'] == 'user' %}
-                <button class="reserve-btn">
-                    Reserve
-                </button>
+                {% if session['role'] == 'user' and seat.status == 'available' %}
+                <form method="POST" action="{{ url_for('seats.reserve_table', id=seat.id) }}" class="reserve-form">
+                    <button type="submit" class="reserve-btn">
+                        Reserve
+                    </button>
+                </form>
                 {% endif %}
+
 
                 {% if session['role'] == 'petugas' or session['role'] == 'admin' %}
                 <form method="POST" action="{{ url_for('seats.delete_seat', id=seat.id) }}" style="display:inline;">
@@ -44,4 +47,46 @@ List Seats
         {% endfor %}
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const reserveButtons = document.querySelectorAll('.reserve-btn');
+
+        reserveButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Yakin ingin reservasi meja ini?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Reservasi!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const redirectUrl = button.getAttribute('data-reserve');
+                        window.location.href = redirectUrl;
+                    }
+                });
+            });
+        });
+    });
+    document.querySelectorAll('.reserve-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Yakin ingin reservasi meja ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, reservasi!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

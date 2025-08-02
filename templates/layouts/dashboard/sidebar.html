@@ -58,12 +58,16 @@
             {% endif %}
 
             <!-- cart -->
+            <!-- gua mau kalo cart items nya 0 maka ilang -->
             {% set active = request.path == "/dashboard/cart/" %}
+            {% set cart_items = session.get('cart', []) %}
             <li class="{% if active %} active {% endif %}" id="cart">
-                <a href="/dashboard/cart/">
+                <a href="{{ url_for('cart.cart') }}">
                     <i class="fas fa-shopping-cart"></i>
                     <span>My Cart</span>
-                    <span class="cart-badge {% if active %} active {% endif %}">3</span>
+                    {% if cart_items %}
+                    <span class="cart-badge {% if active %} active {% endif %}">{{ cart_items|length }}</span>
+                    {% endif %}
                 </a>
             </li>
 

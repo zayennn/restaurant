@@ -59,3 +59,18 @@ def delete_seat(id):
     cur.close()
     flash('Seat berhasil dihapus!', 'success')
     return redirect(url_for('seats.seats'))
+
+
+@bp.route('/reserve/<int:id>', methods=['POST'])
+def reserve_table(id):
+    if 'logged_in' not in session or session['role'] != 'user':
+        flash('Kamu tidak punya akses', 'danger')
+        return redirect(url_for('seats.seats'))
+
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE seats SET status = 'reserved' WHERE id = %s", (id,))
+    mysql.connection.commit()
+    cur.close()
+
+    flash('Meja berhasil direservasi!', 'success')
+    return redirect(url_for('menus.menus'))
