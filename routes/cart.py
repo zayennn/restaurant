@@ -55,11 +55,13 @@ def remove_from_cart(menu_id):
     cart = session.get('cart', [])
     cart = [item for item in cart if item['id'] != menu_id]
     session['cart'] = cart
+    session.modified = True
     flash('Menu berhasil dihapus dari cart.', 'info')
     return redirect(url_for('cart.cart'))
 
 @bp.route('/clear', methods=['POST'])
 def clear_cart():
     session['cart'] = []
+    session.modified = True
     flash('Semua item dihapus dari cart.', 'info')
     return redirect(url_for('cart.cart'))

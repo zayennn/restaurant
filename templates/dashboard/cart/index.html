@@ -55,7 +55,7 @@ Shopping Cart
                     <span id="subtotal">Rp0</span>
                 </div>
                 <div class="summary-row">
-                    <span>Tax (10%)</span>
+                    <span>Tax (5%)</span>
                     <span id="tax">Rp0</span>
                 </div>
                 <div class="summary-row total">
@@ -100,7 +100,7 @@ Shopping Cart
                 subtotal += qty * price;
             });
 
-            const tax = subtotal * 0.10;
+            const tax = subtotal * 0.05;
             const total = subtotal + tax;
 
             document.getElementById('subtotal').textContent = 'Rp' + subtotal.toLocaleString();
@@ -127,10 +127,10 @@ Shopping Cart
         });
 
         document.querySelectorAll('.item-remove').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const item = btn.closest('.cart-item');
-                item.remove();
-                updateSummary();
+            btn.addEventListener('click', (e) => {
+                if (!confirm("Yakin ingin menghapus item ini dari cart?")) {
+                    e.preventDefault();
+                }
             });
         });
 
