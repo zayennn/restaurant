@@ -17,73 +17,132 @@ Shopping Cart
         <div class="cart-items">
             <div class="cart-header">
                 <h3>Selected Items</h3>
-                <span class="clear-cart">Clear All</span>
+                <form method="POST" action="{{ url_for('cart.clear_cart') }}" style="display:inline;">
+                    <button type="submit" class="clear-cart">Clear All</button>
+                </form>
+
             </div>
-            
+
             <div class="cart-item-list">
-                <!-- Item 1 -->
-                <div class="cart-item">
+                {% for item in cart_items %}
+                <div class="cart-item" data-id="{{ item.id }}" data-price="{{ item.price }}">
                     <div class="item-image">
-                        <img src="https://via.placeholder.com/80x80?text=Food" alt="Item Image">
+                        <img src="{{ url_for('static', filename='uploads/menus/' + item.image) if item.image else url_for('static', filename='images/default-food.png') }}"
+                            alt="Item Image">
                     </div>
                     <div class="item-details">
-                        <h4>Spaghetti Carbonara</h4>
-                        <p class="item-price">$12.99</p>
+                        <h4>{{ item.name }}</h4>
+                        <p class="item-price">Rp{{ '{:,.0f}'.format(item.price) }}</p>
                         <div class="item-quantity">
                             <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
-                            <span class="quantity">1</span>
+                            <span class="quantity">{{ item.qty }}</span>
                             <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
-                    <button class="item-remove"><i class="fas fa-times"></i></button>
+                    <form method="POST" action="{{ url_for('cart.remove_from_cart', menu_id=item.id) }}">
+                        <button type="submit" class="item-remove"><i class="fas fa-times"></i></button>
+                    </form>
                 </div>
-                
-                <!-- Item 2 -->
-                <div class="cart-item">
-                    <div class="item-image">
-                        <img src="https://via.placeholder.com/80x80?text=Drink" alt="Item Image">
-                    </div>
-                    <div class="item-details">
-                        <h4>Orange Juice</h4>
-                        <p class="item-price">$3.50</p>
-                        <div class="item-quantity">
-                            <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
-                            <span class="quantity">2</span>
-                            <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <button class="item-remove"><i class="fas fa-times"></i></button>
-                </div>
+                {% endfor %}
             </div>
         </div>
-        
+
         <div class="cart-summary">
             <h3>Order Summary</h3>
             <div class="summary-details">
                 <div class="summary-row">
                     <span>Subtotal</span>
-                    <span>$19.99</span>
+                    <span id="subtotal">Rp0</span>
                 </div>
                 <div class="summary-row">
                     <span>Tax (10%)</span>
-                    <span>$2.00</span>
+                    <span id="tax">Rp0</span>
                 </div>
                 <div class="summary-row total">
                     <span>Total</span>
-                    <span>$21.99</span>
+                    <span id="total">Rp0</span>
                 </div>
             </div>
-            
+
+            {% if session.get('reservation') %}
             <div class="reservation-info">
                 <h4>Reservation Details</h4>
-                <p><strong>Table:</strong> VIP Room</p>
-                <p><strong>Date:</strong> June 15, 2023</p>
-                <p><strong>Time:</strong> 19:00</p>
-                <p><strong>Guests:</strong> 4 persons</p>
+                <p><strong>Table:</strong> {{ session['reservation']['name'] }}</p>
+                <p><strong>Capacity:</strong> {{ session['reservation']['capacity'] }} persons</p>
+                <p><strong>Date:</strong> {{ session['reservation']['date'] }}</p>
+                <p><strong>Time:</strong> {{ session['reservation']['time'] }}</p>
             </div>
-            
+            {% else %}
+            <div class="reservation-info">
+                <h4>Reservation Details</h4>
+                <p>Kamu belum reservasi meja.</p>
+                <a href="{{ url_for('seats.seats') }}" class="add-btn"
+                    style="width: max-content; margin-top: 15px;">Reserve Now</a>
+            </div>
+            {% endif %}
+
+
+
             <button class="checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        function updateSummary() {
+            let subtotal = 0;
+            document.querySelectorAll('.cart-item').forEach(item => {
+                const qty = parseInt(item.querySelector('.quantity').textContent);
+                const price = parseFloat(item.dataset.price);
+                subtotal += qty * price;
+            });
+
+            const tax = subtotal * 0.10;
+            const total = subtotal + tax;
+
+            document.getElementById('subtotal').textContent = 'Rp' + subtotal.toLocaleString();
+            document.getElementById('tax').textContent = 'Rp' + tax.toLocaleString();
+            document.getElementById('total').textContent = 'Rp' + total.toLocaleString();
+        }
+
+        function updateQty(element, action) {
+            const qtySpan = element.closest('.item-quantity').querySelector('.quantity');
+            let qty = parseInt(qtySpan.textContent);
+            if (action === 'plus') qty++;
+            else if (action === 'minus' && qty > 1) qty--;
+
+            qtySpan.textContent = qty;
+            updateSummary();
+        }
+
+        document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+            btn.addEventListener('click', () => updateQty(btn, 'plus'));
+        });
+
+        document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+            btn.addEventListener('click', () => updateQty(btn, 'minus'));
+        });
+
+        document.querySelectorAll('.item-remove').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.cart-item');
+                item.remove();
+                updateSummary();
+            });
+        });
+
+        document.querySelector('.clear-cart').addEventListener('click', () => {
+            if (confirm("Yakin ingin menghapus semua menu dari keranjang?")) {
+                document.querySelectorAll('.cart-item').forEach(item => item.remove());
+                updateSummary();
+            }
+        });
+
+        // Init
+        updateSummary();
+    });
+</script>
 {% endblock %}

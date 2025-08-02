@@ -7,7 +7,7 @@
         <ul>
             <!-- home -->
             {% if session['role'] == 'admin' or session['role'] == 'petugas' %}
-            {% set active = request.path == "/dashboard/" in request.path %}
+            {% set active = request.path == "/dashboard/" %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard">
                     <i class="fas fa-home"></i>
@@ -19,7 +19,7 @@
 
             {% if session['role'] == 'admin' %}
             <!-- users -->
-            {% set active = request.path == "/dashboard/users/" %}
+            {% set active = request.path.startswith("/dashboard/users") %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/users">
                     <i class="fas fa-users"></i>
@@ -29,7 +29,7 @@
             {% endif %}
 
             <!-- seats -->
-            {% set active = request.path == "/dashboard/seats/" %}
+            {% set active = request.path.startswith("/dashboard/seats") %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/seats">
                     <i class="fas fa-chair"></i>
@@ -38,7 +38,7 @@
             </li>
 
             <!-- menus -->
-            {% set active = request.path == "/dashboard/menus/" %}
+            {% set active = request.path.startswith("/dashboard/menus") %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/menus">
                     <i class="fas fa-utensils"></i>
@@ -48,7 +48,7 @@
 
             {% if session['role'] == 'admin' or session['role'] == 'petugas' %}
             <!-- reservations -->
-            {% set active = request.path == "/dashboard/reservations/" %}
+            {% set active = request.path.startswith("/dashboard/reservations") %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/reservations">
                     <i class="fas fa-calendar-check"></i>
@@ -58,13 +58,12 @@
             {% endif %}
 
             <!-- cart -->
-            <!-- gua mau kalo cart items nya 0 maka ilang -->
-            {% set active = request.path == "/dashboard/cart/" %}
-            {% set cart_items = session.get('cart', []) %}
+            {% set active = request.path.startswith("/dashboard/cart") %}
             <li class="{% if active %} active {% endif %}" id="cart">
                 <a href="{{ url_for('cart.cart') }}">
                     <i class="fas fa-shopping-cart"></i>
                     <span>My Cart</span>
+                    {% set cart_items = session.get('cart', []) %}
                     {% if cart_items %}
                     <span class="cart-badge {% if active %} active {% endif %}">{{ cart_items|length }}</span>
                     {% endif %}
@@ -72,7 +71,8 @@
             </li>
 
             <!-- profile -->
-            {% set active = request.path == "/dashboard/profile/personal-info/" in request.path %}
+            <!-- gimana cara nya supaya kalo di url nya ada /dashboard/profile , maka li nya tetep active -->
+            {% set active = request.path.startswith("/dashboard/profile") %}
             <li class="{% if active %} active {% endif %}">
                 <a href="/dashboard/profile/personal-info">
                     <i class="fas fa-user-circle"></i>

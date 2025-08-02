@@ -15,10 +15,10 @@ List Menus
 
     <div class="menu-categories" id="filterButtons">
         <button class="category-btn active" data-filter="all">All</button>
-        <button class="category-btn" data-filter=".appetizer">Appetizers</button>
+        <button class="category-btn" data-filter=".appetizers">Appetizers</button>
         <button class="category-btn" data-filter=".main-course">Main Course</button>
-        <button class="category-btn" data-filter=".dessert">Desserts</button>
-        <button class="category-btn" data-filter=".drink">Drinks</button>
+        <button class="category-btn" data-filter=".desserts">Desserts</button>
+        <button class="category-btn" data-filter=".drinks">Drinks</button>
     </div>
 
     <div class="menu-items-grid" id="menuMixContainer">
@@ -37,12 +37,21 @@ List Menus
                     <span class="menu-item-category">{{ menu.category }}</span>
                 </div>
                 <div class="menu-item-actions">
+                    {% if session['role'] == 'user' %}
+                    <form method="POST" action="{{ url_for('cart.add_to_cart', menu_id=menu.id) }}">
+                        <button type="submit" class="add-btn">Add to Cart</button>
+                    </form>
+                    {% endif %}
+
+
+                    {% if session['role'] == 'petugas' or session['role'] == 'admin' %}
                     <form method="POST" action="{{ url_for('menus.delete_menu', id=menu.id) }}"
                         onsubmit="return confirm('Yakin ingin hapus menu ini?')">
                         <a href="{{ url_for('menus.edit_menu', id=menu.id) }}" class="action-btn edit"><i
                                 class="fas fa-edit"></i></a>
                         <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
                     </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -52,16 +61,26 @@ List Menus
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const mixer = mixitup('#menuMixContainer');
 
     const filterBtns = document.querySelectorAll('#filterButtons .category-btn');
-
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         });
     });
+
+    {% if session.get('swal') %}
+    Swal.fire({
+        title: '{{ session["swal"]["title"] }}',
+        text: '{{ session["swal"]["text"] }}',
+        icon: '{{ session["swal"]["icon"] }}',
+        confirmButtonText: 'OK'
+    });
+    {% set _ = session.pop('swal') %}
+    {% endif %}
 </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from extensions import mysql
 import MySQLdb.cursors
+from datetime import datetime
 
 bp = Blueprint('seats', __name__, url_prefix='/dashboard/seats')
 
@@ -67,10 +68,66 @@ def reserve_table(id):
         flash('Kamu tidak punya akses', 'danger')
         return redirect(url_for('seats.seats'))
 
-    cur = mysql.connection.cursor()
-    cur.execute("UPDATE seats SET status = 'reserved' WHERE id = %s", (id,))
+    date = request.form.get('reservation_date')
+    time = request.form.get('reservation_time')
+
+    # fallback waktu jika tidak tersedia
+    if session['role'] in ['admin', 'petugas'] or not date or not time:
+        now = datetime.now()
+        date = now.date()
+        time = now.strftime('%H:%M:%S')
+
+    user_id = session.get('user_id')
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM seats WHERE id = %s", (id,))
+    seat = cur.fetchone()
+
+    if not seat:
+        flash("Meja tidak ditemukan.", "danger")
+        return redirect(url_for('seats.seats'))
+
+    cur.execute("""
+        UPDATE seats 
+        SET status = 'reserved', reservation_date = %s, reservation_time = %s, reserved_by = %s
+        WHERE id = %s
+    """, (date, time, user_id, id))
     mysql.connection.commit()
     cur.close()
 
-    flash('Meja berhasil direservasi!', 'success')
+    session['reservation'] = {
+        'id': seat['id'],
+        'name': seat['name'],
+        'capacity': seat['capacity'],
+        'date': str(date),
+        'time': str(time)
+    }
+
+    flash(f'Meja {seat["name"]} berhasil direservasi!', 'success')
     return redirect(url_for('menus.menus'))
+
+@bp.route('/cancel-reservation', methods=['POST'])
+def cancel_reservation():
+    if 'logged_in' not in session or session['role'] != 'user':
+        flash('Kamu tidak punya akses', 'danger')
+        return redirect(url_for('seats.seats'))
+
+    reservation = session.get('reservation')
+    if reservation:
+        seat_id = reservation.get('id')
+
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            UPDATE seats 
+            SET status = 'available', reserved_by = NULL, reservation_date = NULL, reservation_time = NULL 
+            WHERE id = %s
+        """, (seat_id,))
+        mysql.connection.commit()
+        cur.close()
+
+        session.pop('reservation', None)
+        flash('Reservasi berhasil dibatalkan.', 'success')
+    else:
+        flash('Kamu belum melakukan reservasi.', 'warning')
+
+    return redirect(url_for('seats.seats'))

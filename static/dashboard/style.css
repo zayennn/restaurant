@@ -893,6 +893,8 @@ body {
     color: #ff6b6b;
     cursor: pointer;
     font-size: 14px;
+    background-color: #fff;
+    border: none;
 }
 
 .clear-cart:hover {

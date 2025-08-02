@@ -23,12 +23,22 @@ List Seats
             <div class="seat-status {{ seat.status }}">{{ seat.status.title() }}</div>
             <div class="seat-actions">
 
-                {% if session['role'] == 'user' and seat.status == 'available' %}
-                <form method="POST" action="{{ url_for('seats.reserve_table', id=seat.id) }}" class="reserve-form">
-                    <button type="submit" class="reserve-btn">
-                        Reserve
-                    </button>
+                {% if session['role'] == 'user' %}
+                {% set reserved = session.get('reservation') %}
+                {% if reserved %}
+                {% if reserved.id == seat.id %}
+                <small class="warning">
+                    Kamu sudah reservasi meja "{{ reserved.name }}"
+                </small>
+                <form method="POST" action="{{ url_for('seats.cancel_reservation') }}">
+                    <button type="submit" class="cancel-btn">Batal Reservasi</button>
                 </form>
+                {% endif %}
+                {% elif seat.status == 'available' %}
+                <form method="POST" action="{{ url_for('seats.reserve_table', id=seat.id) }}">
+                    <button type="submit" class="reserve-btn">Reservasi</button>
+                </form>
+                {% endif %}
                 {% endif %}
 
 
@@ -51,35 +61,32 @@ List Seats
 
 {% block scripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const reserveButtons = document.querySelectorAll('.reserve-btn');
-
-        reserveButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                Swal.fire({
-                    title: 'Yakin ingin reservasi meja ini?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Reservasi!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const redirectUrl = button.getAttribute('data-reserve');
-                        window.location.href = redirectUrl;
-                    }
-                });
-            });
-        });
-    });
-    document.querySelectorAll('.reserve-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
+    document.querySelectorAll('.reserve-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
             e.preventDefault();
+            const form = this.closest('form');
+
+            const now = new Date();
+            const date = now.toISOString().slice(0, 10);
+            const time = now.toTimeString().slice(0, 5);
+
+            const dateInput = document.createElement('input');
+            dateInput.type = 'hidden';
+            dateInput.name = 'reservation_date';
+            dateInput.value = date;
+            form.appendChild(dateInput);
+
+            const timeInput = document.createElement('input');
+            timeInput.type = 'hidden';
+            timeInput.name = 'reservation_time';
+            timeInput.value = time;
+            form.appendChild(timeInput);
 
             Swal.fire({
                 title: 'Yakin ingin reservasi meja ini?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, reservasi!',
+                confirmButtonText: 'Ya, Reservasi!',
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -88,5 +95,27 @@ List Seats
             });
         });
     });
+
+    const cancelBtn = document.querySelector('.cancel-btn');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const form = this.closest('form');
+
+            Swal.fire({
+                title: 'Batalkan reservasi?',
+                text: 'Kamu akan kehilangan reservasi meja ini.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, batalkan',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    }
 </script>
+
 {% endblock %}

@@ -15,7 +15,6 @@ mysql = MySQL(app)
 bcrypt = Bcrypt(app)
 
 with app.app_context():
-    # data admin default
     name = "Admin"
     email = "admin@example.com"
     phone_number = "081234567890"
