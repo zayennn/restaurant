@@ -629,8 +629,17 @@ body {
     border: 5px solid #f8f9fa;
 }
 
+.form-upload-photo {
+    display: block;
+    margin: 0 auto;
+    background-color: salmon;
+    text-align: center;
+}
+
 .change-avatar-btn {
-    background-color: #f8f9fa;
+    background-color: #f7616b;
+    color: #fff;
+    margin-top: 10px;
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
@@ -640,7 +649,7 @@ body {
 }
 
 .change-avatar-btn:hover {
-    background-color: #e9ecef;
+    background-color: #ff838d;
 }
 
 .profile-nav {

@@ -2,7 +2,7 @@
 
 {% block content_profile %}
 <div id="personal-info" class="profile-tab">
-    <form class="profile-form" method="POST" action="{{ url_for('personal_info') }}">
+    <form class="profile-form" method="POST" action="{{ url_for('profile.personal_info') }}">
         <div class="form-group">
             <label for="full-name">Full Name</label>
             <input type="text" name="name" id="full-name" value="{{ session['name'] }}">
