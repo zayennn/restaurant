@@ -1,0 +1,148 @@
+{% extends 'layouts/dashboard/main.html' %}
+
+{% block title %}
+Invoice
+{% endblock %}
+
+{% block content %}
+<section id="invoice" class="content-section">
+    <div class="section-header">
+        <h2>Invoice</h2>
+        <div class="invoice-info">
+            <span class="invoice-number">INV-0007</span>
+            <span class="invoice-date">03 Agustus 2025</span>
+        </div>
+    </div>
+
+    <div class="invoice-container">
+        <!-- Customer Info -->
+        <div class="customer-info">
+            <h3>Customer Information</h3>
+            <div class="info-grid">
+                <div>
+                    <p><strong>Name:</strong> {{ session.name }}</p>
+                    <p><strong>Table:</strong> {{ reservation.name }}</p>
+                </div>
+                <div>
+                    <p><strong>Date:</strong> {{ reservation.date }}</p>
+                    <p><strong>Time:</strong> {{ reservation.time }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items">
+            <h3>Order Details</h3>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td class="item-info">
+                            <div class="item-image">
+                                <img src="{{ url_for('static', filename='uploads/menus/' + item.image) }}"
+                                    alt="{{ item.name }}">
+                            </div>
+                            <div class="item-details">
+                                <h4>{{ item.name }}</h4>
+                                <p class="item-category">{{ item.category }}</p>
+                            </div>
+                        </td>
+                        <td class="item-price">Rp {{ '{:,.0f}'.format(item.price) }}</td>
+                        <td class="item-quantity">
+                            <span class="quantity">{{ item.qty }}</span>
+                        </td>
+                        <td class="item-subtotal">Rp {{ '{:,.0f}'.format(item.price * item.qty) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="payment-summary">
+            <h3>Payment Summary</h3>
+            <div class="summary-grid">
+                <div class="summary-details">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">Rp {{ '{:,.0f}'.format(subtotal) }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (5%)</span>
+                        <span id="tax">Rp {{ '{:,.0f}'.format(tax) }}</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">Rp {{ '{:,.0f}'.format(total) }}</span>
+                    </div>
+                </div>
+                <div class="payment-method">
+                    <label for="payment_method">Payment Method</label>
+                    <select id="payment_method" name="payment_method">
+                        <option value="cash">Cash</option>
+                        <option value="qris">QRIS</option>
+                    </select>
+                    <div id="qris-container" class="hidden">
+                        <img src="https://via.placeholder.com/200x200?text=QRIS" alt="QRIS Payment" class="qris-image">
+                        <p class="qris-instruction">Scan QR code to complete payment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="invoice-actions">
+            <a href="{{ url_for('cart.cart') }}" class="add-btn">
+                <i class="fas fa-shopping-cart"></i> Back to Cart
+            </a>
+            <button class="print-btn" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Invoice
+            </button>
+            <button class="submit-btn" id="processPayment">
+                <i class="fas fa-credit-card"></i> Process Payment
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentMethod = document.getElementById('payment_method');
+        const qrisContainer = document.getElementById('qris-container');
+
+        if (paymentMethod && qrisContainer) {
+            paymentMethod.addEventListener('change', function () {
+                if (this.value === 'qris') {
+                    qrisContainer.classList.remove('hidden');
+                } else {
+                    qrisContainer.classList.add('hidden');
+                }
+            });
+        }
+
+        const processPaymentBtn = document.getElementById('processPayment');
+        if (processPaymentBtn) {
+            processPaymentBtn.addEventListener('click', function () {
+                const method = document.getElementById('payment_method').value;
+
+                Swal.fire({
+                    title: 'Payment Successful',
+                    text: `Payment processed via ${method.toUpperCase()}`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

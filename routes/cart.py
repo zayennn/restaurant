@@ -65,3 +65,42 @@ def clear_cart():
     session.modified = True
     flash('Semua item dihapus dari cart.', 'info')
     return redirect(url_for('cart.cart'))
+
+
+@bp.route('/update_qty', methods=['POST'])
+def update_qty():
+    data = request.json
+    menu_id = data.get('id')
+    qty = data.get('qty')
+
+    if not menu_id or not qty:
+        return {'success': False}, 400
+
+    cart = session.get('cart', [])
+    for item in cart:
+        if item['id'] == menu_id:
+            item['qty'] = qty
+            break
+    session['cart'] = cart
+    session.modified = True
+    return {'success': True}
+
+
+# invoice
+@bp.route('/invoice')
+def invoice():
+    cart_items = session.get('cart', [])
+    reservation = session.get('reservation', None)
+
+    subtotal = sum(item['price'] * item['qty'] for item in cart_items)
+    tax = round(subtotal * 0.05)
+    total = subtotal + tax
+
+    return render_template(
+        'dashboard/cart/payment/invoice.html',
+        cart_items=cart_items,
+        reservation=reservation,
+        subtotal=subtotal,
+        tax=tax,
+        total=total
+    )

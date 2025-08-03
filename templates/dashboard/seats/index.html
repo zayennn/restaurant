@@ -31,7 +31,7 @@ List Seats
                     Kamu sudah reservasi meja "{{ reserved.name }}"
                 </small>
                 <form method="POST" action="{{ url_for('seats.cancel_reservation') }}">
-                    <button type="submit" class="cancel-btn">Batal Reservasi</button>
+                    <button type="submit" class="add-btn">Batal Reservasi</button>
                 </form>
                 {% endif %}
                 {% elif seat.status == 'available' %}

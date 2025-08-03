@@ -8,9 +8,11 @@ List Menus
 <section id="menu" class="content-section">
     <div class="section-header">
         <h2>Menu Management</h2>
+        {% if session['role'] == 'admin' or session['role'] == 'petugas' %}
         <a href="{{ url_for('menus.create_menu') }}" class="add-btn" id="addMenuBtn">
             <i class="fas fa-plus"></i> Add New Menu
         </a>
+        {% endif %}
     </div>
 
     <div class="menu-categories" id="filterButtons">

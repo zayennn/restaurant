@@ -20,7 +20,6 @@ Shopping Cart
                 <form method="POST" action="{{ url_for('cart.clear_cart') }}" style="display:inline;">
                     <button type="submit" class="clear-cart">Clear All</button>
                 </form>
-
             </div>
 
             <div class="cart-item-list">
@@ -81,15 +80,17 @@ Shopping Cart
             </div>
             {% endif %}
 
-
-
-            <button class="checkout-btn">Proceed to Checkout</button>
+            <a href="{{ url_for('cart.invoice') }}"
+                class="checkout-btn {% if not session.get('reservation') %}disabled{% endif %}" id="proceedCheckout">
+                Proceed to Checkout
+            </a>
         </div>
     </div>
 </section>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         function updateSummary() {
@@ -109,13 +110,25 @@ Shopping Cart
         }
 
         function updateQty(element, action) {
-            const qtySpan = element.closest('.item-quantity').querySelector('.quantity');
+            const item = element.closest('.cart-item');
+            const id = parseInt(item.dataset.id);
+            const qtySpan = item.querySelector('.quantity');
             let qty = parseInt(qtySpan.textContent);
+
             if (action === 'plus') qty++;
             else if (action === 'minus' && qty > 1) qty--;
 
             qtySpan.textContent = qty;
             updateSummary();
+
+            // update qty to server
+            fetch("/dashboard/cart/update_qty", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id, qty }),
+            });
         }
 
         document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
@@ -141,8 +154,22 @@ Shopping Cart
             }
         });
 
-        // Init
         updateSummary();
+
+        const proceedBtn = document.getElementById('proceedCheckout');
+        const hasReservation = {{ (session.get('reservation') is not none) | tojson }};
+
+    if (!hasReservation && proceedBtn) {
+        proceedBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Reservasi Diperlukan',
+                text: 'Anda belum reservasi seat, silahkan reservasi terlebih dahulu.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+        });
+    }
     });
 </script>
 {% endblock %}
