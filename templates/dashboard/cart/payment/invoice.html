@@ -57,7 +57,7 @@ Invoice
                         </td>
                         <td class="item-price">Rp {{ '{:,.0f}'.format(item.price) }}</td>
                         <td class="item-quantity">
-                            <span class="quantity">{{ item.qty }}</span>
+                            <span class="quantity-control">{{ item.qty }}</span>
                         </td>
                         <td class="item-subtotal">Rp {{ '{:,.0f}'.format(item.price * item.qty) }}</td>
                     </tr>

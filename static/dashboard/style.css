@@ -959,6 +959,8 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    transform: translateY(-20px);
+    padding: 0 0 25px 0;
 }
 
 .quantity-btn {
@@ -1549,6 +1551,10 @@ textarea:focus {
     margin-top: 15px;
 }
 
+.order-table tr {
+    border-bottom: 1px solid #eee;
+}
+
 .order-table th {
     text-align: left;
     padding: 12px 15px;
@@ -1559,7 +1565,7 @@ textarea:focus {
 
 .order-table td {
     padding: 15px;
-    border-bottom: 1px solid #eee;
+    /* border-bottom: 1px solid #eee; */
     vertical-align: middle;
 }
 
@@ -1614,7 +1620,7 @@ textarea:focus {
     justify-content: center;
     vertical-align: middle;
     height: 100%;
-    padding: 15px 0;
+    /* padding: 0 0 15px 0; */
 }
 
 .quantity-btn {
